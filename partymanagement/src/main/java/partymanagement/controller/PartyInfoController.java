@@ -1,28 +1,40 @@
 package partymanagement.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 import partymanagement.domain.*;
 import partymanagement.domain.repository.PartyInfoRepository;
 import partymanagement.infra.HandlerUtils;
@@ -82,90 +94,11 @@ public class PartyInfoController {
     public ResponseEntity<Map<String, Object>> getPastPostList(@RequestParam(required = false) String condition) {
         return handler.handleSuccess(partyInfoService.findAllList("past",condition));
     }
-    @PostMapping("/post-moveinfo")
-    public ResponseEntity<Map<String, Object>> postMoveInfo(@RequestBody PartyInfo param){
-        System.out.println("param : " + param);
-        String res = "어어 왔어.";
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println(res+param);
-        return handler.handleSuccess(param);
-    }
-    @PostMapping("/post-moveinfo2")
-    public ResponseEntity<Map<String, Object>> postMoveInfo2(@RequestBody HashMap<String,Object> param){
-        System.out.println("param2 : " + param);
-        for(String k : param.keySet()){
-            System.out.println(k+"="+param.get(k));
-        }
-        String res = "어어 왔어2.";
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println(res+param);
-        return handler.handleSuccess(param);
-    }
-    @PostMapping("/post-moveinfo3")
-    public ResponseEntity<Map<String, Object>> postMoveInfo3(PartyInfo partyInfo){
-        System.out.println("param3 : " + partyInfo);
-        String res = "어어 왔어3.";
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println(res+partyInfo);
-        return handler.handleSuccess(partyInfo);
-    }
-
-    @PostMapping("/post-moveinfo4")
-    public ResponseEntity<Map<String, Object>> postMoveInfo4(HttpServletResponse response){
-        System.out.println("param4 : " + response.getHeaderNames());
-        String res = "어어 왔어4.";
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println(res+response);
-        HashMap<String,Object> map = new HashMap<String,Object>();
-        map.put("data","dd");
-        return handler.handleSuccess(map);
-    }
-
-    @PostMapping(value ="/post-moveinfo5", produces = "application/json;charset=UTF-8")
-    public ResponseEntity<Map<String, Object>> postMoveInfo5(@RequestBody HashMap<String,Object> param){
-        System.out.println("param2 : " + param);
-        for(String k : param.keySet()){
-            System.out.println(k+"="+param.get(k));
-        }
-        String res = "어어 왔어2.";
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println("#######################################");
-        System.out.println(res+param);
-        return handler.handleSuccess(param);
+    //@RequestBody HashMap<String,Object> param로도 가능
+    @PostMapping(value="/post-moveinfo", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> postMoveInfo(@RequestBody PartyInfo payload){
+        long id = partyInfoService.registMoveInfo(payload);
+        return handler.handleSuccess(id);
     }
 
 }

@@ -3,7 +3,10 @@ package partymanagement.domain;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import partymanagement.PartyManagementApplication;
 import partymanagement.domain.event.SelectedRole;
 import partymanagement.domain.repository.PartyInfoRepository;
@@ -13,6 +16,7 @@ import partymanagement.domain.enumeration.*;
 @Entity
 @Table(name = "PartyInfo_table")
 @Data
+@NoArgsConstructor
 public class PartyInfo {
 
     @Id
@@ -44,6 +48,16 @@ public class PartyInfo {
             PartyInfoRepository.class
         );
         return partyInfoRepository;
+    }
+
+    //Carpooler는 미리 되는일은 x
+    @Builder
+    public PartyInfo(int curNumberOfParty, int maxNumberOfParty, Driver driver, MoveInfo moveInfo, PartyStatus status){
+        setCurNumberOfParty(curNumberOfParty);
+        setMaxNumberOfParty(maxNumberOfParty);
+        setDriver(driver);
+        setMoveInfo(moveInfo);
+        setStatus(status);
     }
 
     public void selectRole() {}

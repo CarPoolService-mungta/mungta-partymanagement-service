@@ -1,11 +1,11 @@
 package partymanagement.service;
 
-import java.sql.Driver;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import partymanagement.domain.PartyInfo;
+import partymanagement.domain.vo.Driver;
 
 public interface PartyInfoService {
 
@@ -16,4 +16,7 @@ public interface PartyInfoService {
     PartyInfo findByMoveInfoStartDate(LocalDateTime times);
 
     public List<PartyInfo> findAllList(String status, String condition);
+
+    public long registMoveInfo(PartyInfo partyInfo);
+
 }

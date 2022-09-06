@@ -1,6 +1,5 @@
 package partymanagement.service;
 
-import java.sql.Driver;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import partymanagement.domain.PartyInfo;
 import partymanagement.domain.repository.PartyInfoRepository;
+import partymanagement.domain.vo.CarPooler;
+import partymanagement.domain.vo.CarPooler;
+import partymanagement.domain.vo.Driver;
+import partymanagement.domain.vo.MoveInfo;
 
 @Service
 public class PartyInfoServiceImpl implements PartyInfoService{
@@ -58,5 +61,42 @@ public class PartyInfoServiceImpl implements PartyInfoService{
             return condition.equals("")?partyInfoRepository.findAllPastListNoCondition() : partyInfoRepository.findAllPastList(condition);
         }
     }
-    
+
+    @Override
+    public long registMoveInfo(PartyInfo partyInfo) {
+        Driver driverInfo = (Driver) partyInfo.getDriver();
+        MoveInfo moveInfo = (MoveInfo) partyInfo.getMoveInfo();
+        long id = partyInfoRepository.save(
+            PartyInfo.builder()
+                    .curNumberOfParty(partyInfo.getCurNumberOfParty())
+                    .maxNumberOfParty(partyInfo.getMaxNumberOfParty())
+                    .driver(
+                        Driver.builder()
+                              .userId(driverInfo.getUserId())
+                              .name(driverInfo.getName())
+                              .profileImage(driverInfo.getProfileImage())
+                              .gender(driverInfo.getGender())
+                              .department(driverInfo.getDepartment())
+                              .carNumber(driverInfo.getCarNumber())
+                              .carKind(driverInfo.getCarKind())
+                              .settlementUrl(driverInfo.getSettlementUrl())
+                              .build()
+                     )
+                     .moveInfo(
+                        MoveInfo.builder()
+                                .placeOfDeparture(moveInfo.getPlaceOfDeparture())
+                                .destination(moveInfo.getDestination())
+                                .startDate(moveInfo.getStartDate())
+                                .price(moveInfo.getPrice())
+                                .distance(moveInfo.getDistance())
+                                .build()
+                     )
+                     .status(partyInfo.getStatus())
+                     .build()
+        ).getId();
+
+        System.out.println("#운전정보 등록 id: "+ id);
+        return id;
+    }
+
 }
