@@ -18,6 +18,7 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+//현재는 사용 x
 // @Configuration
 // @EnableTransactionManagement
 // @EnableJpaRepositories(

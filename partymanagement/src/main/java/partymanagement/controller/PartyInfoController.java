@@ -31,8 +31,8 @@ import partymanagement.service.PartyInfoService;
 
 //@CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
-//@RequestMapping(value = "/api/party-management/partyInfos")
-@RequestMapping(value = "/api/partyInfos")
+@RequestMapping(value = "/api/party-management/partyInfos")
+//@RequestMapping(value = "/api/partyInfos")
 @Transactional
 public class PartyInfoController {
 
