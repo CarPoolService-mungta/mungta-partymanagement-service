@@ -63,6 +63,17 @@ public class PartyInfoServiceImpl implements PartyInfoService{
     }
 
     @Override
+    public List<PartyInfo> findMyList(String status, String condition) {
+
+        // if(status.equals("now")){
+        //     return condition.equals("")?partyInfoRepository.findMyNowListNoCondition() : partyInfoRepository.findMyNowList(condition);
+        // }else{
+        //     return condition.equals("")?partyInfoRepository.findMyPastListNoCondition() : partyInfoRepository.findMyPastList(condition);
+        // }
+        return null;
+    }
+
+    @Override
     public long registMoveInfo(PartyInfo partyInfo) {
         Driver driverInfo = (Driver) partyInfo.getDriver();
         MoveInfo moveInfo = (MoveInfo) partyInfo.getMoveInfo();

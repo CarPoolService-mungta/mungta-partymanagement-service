@@ -101,4 +101,9 @@ public class PartyInfoController {
         return handler.handleSuccess(id);
     }
 
+    @GetMapping("/carpool-now-list")
+    public ResponseEntity<Map<String, Object>> getPostMyList(@RequestParam(required = false) String condition) {
+        return handler.handleSuccess(partyInfoService.findAllList("now",condition));
+    }
+
 }

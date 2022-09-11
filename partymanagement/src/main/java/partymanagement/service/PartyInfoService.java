@@ -19,4 +19,6 @@ public interface PartyInfoService {
 
     public long registMoveInfo(PartyInfo partyInfo);
 
+    public List<PartyInfo> findMyList(String status, String condition);
+
 }
