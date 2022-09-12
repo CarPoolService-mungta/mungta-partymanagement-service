@@ -11,11 +11,11 @@ public interface PartyInfoService {
 
     List<PartyInfo> findByMoveInfoStartDate(String times);
 
-    public List<PartyInfo> findAllList(String status, String condition);
+    // public List<PartyInfo> findAllList(String status, String condition);
 
     public long registMoveInfo(PartyInfo partyInfo);
-
-    public List<PartyInfo> findMyList(String status, String condition, String user_id, String user_id2);
-
+    public List<PartyInfo> findAllList(String status, String search_condition,String order_condition, String value);
+ //   public List<PartyInfo> findMyList(String status, String condition, String user_id, String user_id2);
+    public List<PartyInfo> findMyList(String status, String search_condition, String order_condition, String value, String user_id, String user_id2);
     public PartyInfo findById(Long partyId);
 }

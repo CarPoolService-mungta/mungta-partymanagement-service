@@ -86,12 +86,13 @@ public class PartyInfoController {
     }
 
     @GetMapping("/carpool-now-list")
-    public ResponseEntity<Map<String, Object>> getPostList(@RequestParam(required = false) String condition) {
-        return handler.handleSuccess(partyInfoService.findAllList("now",condition));
+    public ResponseEntity<Map<String, Object>> getPostList(@RequestParam(required = false) String search_condition,@RequestParam(required = false) String order_condition, @RequestParam(required = false) String value) {
+        System.out.println("search_condition, order_condition, value:"+search_condition+","+ order_condition+","+ value);
+        return handler.handleSuccess(partyInfoService.findAllList("now",search_condition, order_condition, value));
     }
     @GetMapping("/carpool-past-list")
-    public ResponseEntity<Map<String, Object>> getPastPostList(@RequestParam(required = false) String condition) {
-        return handler.handleSuccess(partyInfoService.findAllList("past",condition));
+    public ResponseEntity<Map<String, Object>> getPastPostList(@RequestParam(required = false) String search_condition,@RequestParam(required = false) String order_condition, @RequestParam(required = false) String value) {
+        return handler.handleSuccess(partyInfoService.findAllList("past",search_condition, order_condition, value));
     }
     //@RequestBody HashMap<String,Object> param로도 가능
     @PostMapping(value="/post-moveinfo", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -101,12 +102,13 @@ public class PartyInfoController {
     }
 
     @GetMapping("/carpool-now-my-list")
-    public ResponseEntity<Map<String, Object>> getPostMyList(@RequestParam(required = false) String search_condition, @RequestParam(required = true) String user_id) {
-        return handler.handleSuccess(partyInfoService.findMyList("now",search_condition, user_id, user_id));
+    public ResponseEntity<Map<String, Object>> getPostMyList(@RequestParam(required = false) String search_condition,@RequestParam(required = false) String order_condition, @RequestParam(required = false) String value, @RequestParam(required = true) String user_id) {
+        System.out.println("search_condition, order_condition, value, user_id:"+search_condition+","+ order_condition+","+ value+","+user_id);
+        return handler.handleSuccess(partyInfoService.findMyList("now",search_condition, order_condition, value, user_id, user_id));
     }
     @GetMapping("/carpool-past-my-list")
-    public ResponseEntity<Map<String, Object>> getPastPostMyList(@RequestParam(required = false) String search_condition, @RequestParam(required = true) String user_id) {
-        return handler.handleSuccess(partyInfoService.findMyList("past",search_condition, user_id, user_id));
+    public ResponseEntity<Map<String, Object>> getPastPostMyList(@RequestParam(required = false) String search_condition,@RequestParam(required = false) String order_condition, @RequestParam(required = false) String value, @RequestParam(required = true) String user_id) {
+        return handler.handleSuccess(partyInfoService.findMyList("past",search_condition, order_condition, value, user_id, user_id));
     }
 
     @GetMapping("/carpool-info")

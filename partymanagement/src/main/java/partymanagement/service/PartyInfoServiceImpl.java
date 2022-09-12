@@ -26,52 +26,126 @@ public class PartyInfoServiceImpl implements PartyInfoService{
         return res;
     }
 
+    // @Override
+    // public List<PartyInfo> findAllList(String status, String order_condition) {
+    //     if(order_condition == null) order_condition ="";
+    //     System.out.println("현재 상태는 "+status+" 현재 정렬 조건은 "+order_condition);
+    //     if(status.equals("now")){
+    //         switch(order_condition){
+    //             case "start_date": return partyInfoRepository.findAllNowListByStartDateDesc();
+    //             case "review_average_score": return partyInfoRepository.findAllNowListByReviewAverageScoreDesc();
+    //             default : return partyInfoRepository.findAllNowListNoCondition();
+    //         }
+    //         //return order_condition.equals("")?partyInfoRepository.findAllNowListNoCondition() : partyInfoRepository.findAllNowListSort(Sort.by(Sort.Direction.DESC,order_condition));
+    //     }else{
+    //         switch(order_condition){
+    //             case "start_date": return partyInfoRepository.findAllPastListByStartDateDesc();
+    //             case "review_average_score": return partyInfoRepository.findAllPastListByReviewAverageScoreDesc();
+    //             default : return partyInfoRepository.findAllPastListNoCondition();
+    //         }
+    //         //return order_condition.equals("")?partyInfoRepository.findAllPastListNoCondition() : partyInfoRepository.findAllPastList(order_condition);
+    //     }
+    // }
     @Override
-    public List<PartyInfo> findAllList(String status, String search_condition) {
+    public List<PartyInfo> findAllList(String status, String search_condition, String order_condition, String value) {
         if(search_condition == null) search_condition ="";
-        System.out.println("현재 상태는 "+status+" 현재 정렬 조건은 "+search_condition);
-        if(status.equals("now")){
-            switch(search_condition){
-                case "start_date": return partyInfoRepository.findAllNowListByStartDateDesc();
-                case "distance"  : return partyInfoRepository.findAllNowListByDistanceDesc();
-                case "review_average_score": return partyInfoRepository.findAllNowListByReviewAverageScoreDesc();
-                default : return partyInfoRepository.findAllNowListNoCondition();
+        if(order_condition == null) order_condition ="";
+        if(status.equals("now"))
+        {
+           if(search_condition.equals("start_date")){
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findAllNowListByStartDateOrderByStartDateDesc(value);
+                    case "review_average_score": return partyInfoRepository.findAllNowListByStartDateOrderByReviewAverageScoreDesc(value);
+                    default : return partyInfoRepository.findAllNowListNoCondition();
+                }
+           }else if(search_condition.equals("department")){
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findAllNowListByDepartmentOrderByStartDateDesc(value);
+                    case "review_average_score": return partyInfoRepository.findAllNowListByDepartmentOrderByReviewAverageScoreDesc(value);
+                    default : return partyInfoRepository.findAllNowListByDepartmentNoOrder(value);
+                }
+           }else if(search_condition.equals("destination")){
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findAllNowListByDestinationOrderByStartDateDesc(value);
+                    case "review_average_score": return partyInfoRepository.findAllNowListByDestinationOrderByReviewAverageScoreDesc(value);
+                    default : return partyInfoRepository.findAllNowListByDestinationNoOrder(value);
+                }
+           }else{
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findAllNowListByStartDateDesc();
+                    case "review_average_score": return partyInfoRepository.findAllNowListByReviewAverageScoreDesc();
+                    default : return partyInfoRepository.findAllNowListNoCondition();
+                }
             }
-            //return search_condition.equals("")?partyInfoRepository.findAllNowListNoCondition() : partyInfoRepository.findAllNowListSort(Sort.by(Sort.Direction.DESC,search_condition));
-        }else{
-            switch(search_condition){
+        }
+        else{
+            switch(order_condition){
                 case "start_date": return partyInfoRepository.findAllPastListByStartDateDesc();
-                case "distance"  : return partyInfoRepository.findAllPastListByDistanceDesc();
                 case "review_average_score": return partyInfoRepository.findAllPastListByReviewAverageScoreDesc();
                 default : return partyInfoRepository.findAllPastListNoCondition();
             }
-            //return search_condition.equals("")?partyInfoRepository.findAllPastListNoCondition() : partyInfoRepository.findAllPastList(search_condition);
         }
     }
-
     @Override
-    public List<PartyInfo> findMyList(String status, String search_condition, String user_id, String user_id2) {
+    public List<PartyInfo> findMyList(String status, String search_condition, String order_condition, String value, String user_id, String user_id2) {
         if(search_condition == null) search_condition ="";
-        System.out.println("[status:"+status+" search_condition:"+search_condition+ " user_id:"+ user_id+ " user_id2:"+ user_id2+ "("+user_id.equals(user_id2)+")]");
+        if(order_condition == null) order_condition ="";
+        System.out.println("[status:"+status+" order_condition:"+order_condition+ " user_id:"+ user_id+ " user_id2:"+ user_id2+ "("+user_id.equals(user_id2)+")]");
         if(status.equals("now"))
         {
-           // return condition.equals("")?partyInfoRepository.findMyNowListNoCondition(user_id,user_id2) : partyInfoRepository.findMyNowList(user_id,user_id2, condition);
-            switch(search_condition){
-                case "start_date": return partyInfoRepository.findMyNowListByStartDateDesc(user_id,user_id2);
-                case "distance"  : return partyInfoRepository.findMyNowListByDistanceDesc(user_id,user_id2);
-                case "review_average_score": return partyInfoRepository.findMyNowListByReviewAverageScoreDesc(user_id,user_id2);
-                default : return partyInfoRepository.findMyNowListNoCondition(user_id,user_id2);
+           if(search_condition.equals("start_date")){
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findMyNowListByStartDateOrderByStartDateDesc(user_id,user_id2, value);
+                    case "review_average_score": return partyInfoRepository.findMyNowListByStartDateOrderByReviewAverageScoreDesc(user_id,user_id2, value);
+                    default : return partyInfoRepository.findMyNowListNoCondition(user_id,user_id2);
+                }
+           }else if(search_condition.equals("department")){
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findMyNowListByDepartmentOrderByStartDateDesc(user_id,user_id2, value);
+                    case "review_average_score": return partyInfoRepository.findMyNowListByDepartmentOrderByReviewAverageScoreDesc(user_id,user_id2, value);
+                    default : return partyInfoRepository.findMyNowListByDepartmentNoOrder(user_id,user_id2,value);
+                }
+           }else if(search_condition.equals("destination")){
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findMyNowListByDestinationOrderByStartDateDesc(user_id,user_id2,value);
+                    case "review_average_score": return partyInfoRepository.findMyNowListByDestinationOrderByReviewAverageScoreDesc(user_id,user_id2,value);
+                    default : return partyInfoRepository.findMyNowListByDestinationNoOrder(user_id,user_id2,value);
+                }
+           }else{
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findMyNowListByStartDateDesc(user_id,user_id2);
+                    case "review_average_score": return partyInfoRepository.findMyNowListByReviewAverageScoreDesc(user_id,user_id2);
+                    default : return partyInfoRepository.findMyNowListNoCondition(user_id,user_id2);
+                }
             }
         }
         else
         {
-            switch(search_condition){
-                case "start_date": return partyInfoRepository.findMyPastListByStartDateDesc(user_id,user_id2);
-                case "distance"  : return partyInfoRepository.findMyPastListByDistanceDesc(user_id,user_id2);
-                case "review_average_score": return partyInfoRepository.findMyPastListByReviewAverageScoreDesc(user_id,user_id2);
-                default : return partyInfoRepository.findMyPastListNoCondition(user_id,user_id2);
+            if(search_condition.equals("start_date")){
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findMyPastListByStartDateOrderByStartDateDesc(user_id,user_id2, value);
+                    case "review_average_score": return partyInfoRepository.findMyPastListByStartDateOrderByReviewAverageScoreDesc(user_id,user_id2, value);
+                    default : return partyInfoRepository.findMyPastListNoCondition(user_id,user_id2);
+                }
+           }else if(search_condition.equals("department")){
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findMyPastListByDepartmentOrderByStartDateDesc(user_id,user_id2, value);
+                    case "review_average_score": return partyInfoRepository.findMyPastListByDepartmentOrderByReviewAverageScoreDesc(user_id,user_id2, value);
+                    default : return partyInfoRepository.findMyPastListByDepartmentNoOrder(user_id,user_id2,value);
+                }
+           }else if(search_condition.equals("destination")){
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findMyPastListByDestinationOrderByStartDateDesc(user_id,user_id2,value);
+                    case "review_average_score": return partyInfoRepository.findMyPastListByDestinationOrderByReviewAverageScoreDesc(user_id,user_id2,value);
+                    default : return partyInfoRepository.findMyPastListByDestinationNoOrder(user_id,user_id2,value);
+                }
+           }else{
+                switch(order_condition){
+                    case "start_date": return partyInfoRepository.findMyPastListByStartDateDesc(user_id,user_id2);
+                    case "review_average_score": return partyInfoRepository.findMyPastListByReviewAverageScoreDesc(user_id,user_id2);
+                    default : return partyInfoRepository.findMyPastListNoCondition(user_id,user_id2);
+                }
             }
-            //return search_condition.equals("")?partyInfoRepository.findMyPastListNoCondition(user_id,user_id2) : partyInfoRepository.findMyPastList(user_id,user_id2, search_condition);
         }
     }
 

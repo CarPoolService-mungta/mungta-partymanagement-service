@@ -20,8 +20,7 @@ spring:
   #   console:
   #     enabled: true
   datasource:
-    url: jdbc:mysql://localhost:3307/testdb?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
-    driverClassName: org.h2.Driver
+    url: jdbc:mysql://localhost:3307/testdb?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
