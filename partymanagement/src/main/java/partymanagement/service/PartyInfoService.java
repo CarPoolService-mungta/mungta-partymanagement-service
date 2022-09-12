@@ -9,16 +9,13 @@ import partymanagement.domain.vo.Driver;
 
 public interface PartyInfoService {
 
-    Optional<PartyInfo> findByDriverUserId(String userId);
-
-    Optional<PartyInfo> findByDriver(Driver driver);
-
-    PartyInfo findByMoveInfoStartDate(LocalDateTime times);
+    List<PartyInfo> findByMoveInfoStartDate(String times);
 
     public List<PartyInfo> findAllList(String status, String condition);
 
     public long registMoveInfo(PartyInfo partyInfo);
 
-    public List<PartyInfo> findMyList(String status, String condition);
+    public List<PartyInfo> findMyList(String status, String condition, String user_id, String user_id2);
 
+    public PartyInfo findById(Long partyId);
 }

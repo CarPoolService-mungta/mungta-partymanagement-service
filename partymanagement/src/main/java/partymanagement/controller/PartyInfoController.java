@@ -72,18 +72,17 @@ public class PartyInfoController {
     }
 
 
+    @GetMapping("/partymanagement-find-by-startdatetime")
+    public ResponseEntity<Map<String, Object>> findByMoveInfoStartDateTime(@RequestParam String startDates){
+        return handler.handleSuccess(partyInfoService.findByMoveInfoStartDate(startDates));
+    }
+
     @GetMapping("/partymanagement-find-by-startdate")
     public ResponseEntity<Map<String, Object>> findByMoveInfoStartDate(@RequestParam String startDates){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(startDates, formatter);
-
-        System.out.println("[start]#####################################################findByMoveInfo");
-        System.out.println("PartyInfoController.findByMoveInfoStartDate()");
-        System.out.println("startDates:"+startDates);
-        System.out.println("dateTime:"+dateTime);
-        System.out.println(partyInfoRepository.findByMoveInfoStartDate(startDates));
-        System.out.println("[end]#####################################################findByMoveInfo");
-        return handler.handleSuccess(partyInfoRepository.findByMoveInfoStartDate(startDates));
+        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        // LocalDateTime dateTime = LocalDateTime.parse(startDates, formatter);
+        // error 처리해도 되는디
+        return handler.handleSuccess(partyInfoService.findByMoveInfoStartDate(startDates));
     }
 
     @GetMapping("/carpool-now-list")
@@ -101,9 +100,17 @@ public class PartyInfoController {
         return handler.handleSuccess(id);
     }
 
-    @GetMapping("/carpool-now-list")
-    public ResponseEntity<Map<String, Object>> getPostMyList(@RequestParam(required = false) String condition) {
-        return handler.handleSuccess(partyInfoService.findAllList("now",condition));
+    @GetMapping("/carpool-now-my-list")
+    public ResponseEntity<Map<String, Object>> getPostMyList(@RequestParam(required = false) String search_condition, @RequestParam(required = true) String user_id) {
+        return handler.handleSuccess(partyInfoService.findMyList("now",search_condition, user_id, user_id));
+    }
+    @GetMapping("/carpool-past-my-list")
+    public ResponseEntity<Map<String, Object>> getPastPostMyList(@RequestParam(required = false) String search_condition, @RequestParam(required = true) String user_id) {
+        return handler.handleSuccess(partyInfoService.findMyList("past",search_condition, user_id, user_id));
     }
 
+    @GetMapping("/carpool-info")
+    public ResponseEntity<Map<String, Object>> getPost(@RequestParam(required = true) Long id) {
+        return handler.handleSuccess(partyInfoService.findById(id));
+    }
 }

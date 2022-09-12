@@ -3,7 +3,7 @@ package partymanagement.domain.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -21,30 +21,65 @@ import partymanagement.domain.vo.Driver;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long>{
 
-    List<PartyInfo> findByDriverUserId(String userId);
 
-    List<PartyInfo> findByDriver(Driver driver);
-
-    List<PartyInfo> findByCarPoolerUserId(String userId);
-
-    //이것들로 하니까 id를 가져오는데?
     @Query(value ="SELECT p.* FROM party_info_table p WHERE p.start_date  LIKE  CONCAT(:times,'%')", nativeQuery = true)
     List<PartyInfo> findByMoveInfoStartDate(@Param("times") String times);
 
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status < 2 ORDER BY :search_condition DESC", nativeQuery = true)
-    List<PartyInfo> findAllNowList(@Param("search_condition") String search_condition);
 
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status < 2 ", nativeQuery = true)
+    //# 현재 전체 카풀리스트를 검색 (OPEN, FULL)
+    //native query를 사용하는 경우 sort 불가
+    // @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1','3') ORDER BY :search_condition DESC", nativeQuery = true)
+    // List<PartyInfo> findAllNowList();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') ORDER BY p.start_date DESC", nativeQuery = true)
+    List<PartyInfo> findAllNowListByStartDateDesc();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') ORDER BY p.distance DESC", nativeQuery = true)
+    List<PartyInfo> findAllNowListByDistanceDesc();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') ORDER BY p.review_average_score DESC", nativeQuery = true)
+    List<PartyInfo> findAllNowListByReviewAverageScoreDesc();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') ORDER BY p.id DESC", nativeQuery = true)
     List<PartyInfo> findAllNowListNoCondition();
 
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status > 2 ORDER BY :search_condition DESC", nativeQuery = true)
-    List<PartyInfo> findAllPastList(@Param("search_condition") String search_condition);
-
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status > 2 ", nativeQuery = true)
+    //# 종료된 전체 카풀리스트를 검색 (CLOSED)
+    //native query를 사용하는 경우 sort 불가
+    // @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY :search_condition DESC", nativeQuery = true)
+    // List<PartyInfo> findAllPastList(@Param("search_condition") String search_condition);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY p.start_date DESC", nativeQuery = true)
+    List<PartyInfo> findAllPastListByStartDateDesc();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY p.distance DESC", nativeQuery = true)
+    List<PartyInfo> findAllPastListByDistanceDesc();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY p.review_average_score DESC", nativeQuery = true)
+    List<PartyInfo> findAllPastListByReviewAverageScoreDesc();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY p.id DESC", nativeQuery = true)
     List<PartyInfo> findAllPastListNoCondition();
+
+    //# 현재 진행 중인 카풀 중 본인이 포함된 카풀리스트를 검색 (OPEN, FULL, STARTED)
+    /* native query를 사용하는 경우 sort 불가*/
+    // @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1','3') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('0','1','3') AND c.user_id = :user_id2 ORDER BY :search_condition DESC", nativeQuery = true)
+    // List<PartyInfo> findMyNowList(@Param("user_id") String user_id, @Param("user_id2") String user_id2, @Param("search_condition") String search_condition);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1','3') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('0','1','3') AND c.user_id = :user_id2 ORDER BY p.start_date DESC", nativeQuery = true)
+    List<PartyInfo> findMyNowListByStartDateDesc(@Param("user_id") String user_id, @Param("user_id2") String user_id2);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1','3') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('0','1','3') AND c.user_id = :user_id2 ORDER BY p.distance DESC", nativeQuery = true)
+    List<PartyInfo> findMyNowListByDistanceDesc(@Param("user_id") String user_id, @Param("user_id2") String user_id2);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1','3') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('0','1','3') AND c.user_id = :user_id2 ORDER BY p.review_average_score DESC", nativeQuery = true)
+    List<PartyInfo> findMyNowListByReviewAverageScoreDesc(@Param("user_id") String user_id, @Param("user_id2") String user_id2);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1','3') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('0','1','3') AND c.user_id = :user_id2 ORDER BY p.id DESC", nativeQuery = true)
+    List<PartyInfo> findMyNowListNoCondition(@Param("user_id") String user_id, @Param("user_id2") String user_id2);
+
+
+    //# 현재 완료된 카풀 중 본인이 포함된 카풀리스트를 검색 (CLOSED)
+    /* native query를 사용하는 경우 sort 불가*/
+    // @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('4') AND c.user_id = :user_id2 ORDER BY :search_condition DESC", nativeQuery = true)
+    // List<PartyInfo> findMyPastList(@Param("user_id") String user_id, @Param("user_id2") String user_id2, @Param("search_condition") String search_condition);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('4') AND c.user_id = :user_id2 ORDER BY p.start_date DESC", nativeQuery = true)
+    List<PartyInfo> findMyPastListByStartDateDesc(@Param("user_id") String user_id, @Param("user_id2") String user_id2);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('4') AND c.user_id = :user_id2 ORDER BY p.distance DESC", nativeQuery = true)
+    List<PartyInfo> findMyPastListByDistanceDesc(@Param("user_id") String user_id, @Param("user_id2") String user_id2);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('4') AND c.user_id = :user_id2 ORDER BY p.review_average_score DESC", nativeQuery = true)
+    List<PartyInfo> findMyPastListByReviewAverageScoreDesc(@Param("user_id") String user_id, @Param("user_id2") String user_id2);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('4') AND c.user_id = :user_id2 ORDER BY p.id DESC", nativeQuery = true)
+    List<PartyInfo> findMyPastListNoCondition(@Param("user_id") String user_id, @Param("user_id2") String user_id2);
 
 /*
     //잘 안먹어서.. 그냥 쿼리로 함

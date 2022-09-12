@@ -13,7 +13,7 @@ import org.springframework.beans.BeanUtils;
 @NoArgsConstructor
 public class ReviewInfo {
 
-    private Long reviewAverageScore;
+    private double reviewAverageScore;
 
     private String recentComment;
 }
