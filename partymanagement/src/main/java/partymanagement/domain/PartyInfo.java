@@ -59,6 +59,14 @@ public class PartyInfo {
         setMoveInfo(moveInfo);
         setStatus(status);
     }
-
+    @Builder
+    public PartyInfo(int curNumberOfParty, int maxNumberOfParty, Driver driver, MoveInfo moveInfo, PartyStatus status, List<CarPooler> carPooler){
+        setCurNumberOfParty(curNumberOfParty);
+        setMaxNumberOfParty(maxNumberOfParty);
+        setDriver(driver);
+        setMoveInfo(moveInfo);
+        setStatus(status);
+        setCarPooler(carPooler);
+    }
     public void selectRole() {}
 }

@@ -37,7 +37,7 @@ public class Driver {
     private ReviewInfo reviewInfo;
 
     @Builder
-    public Driver(String userId, String name, String profileImage, String gender, String department, String carNumber, String carKind, String settlementUrl){
+    public Driver(String userId, String name, String profileImage, String gender, String department, String carNumber, String carKind, String settlementUrl, ReviewInfo reviewInfo){
         setUserId(userId);
         setName(name);
         setProfileImage(profileImage);
@@ -46,5 +46,6 @@ public class Driver {
         setCarNumber(carNumber);
         setCarKind(carKind);
         setSettlementUrl(settlementUrl);
+        setReviewInfo(reviewInfo);
     }
 }

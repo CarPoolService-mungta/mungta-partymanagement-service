@@ -24,6 +24,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long>{
 
 
+
+
     @Query(value ="SELECT p.* FROM party_info_table p WHERE p.start_date  LIKE  CONCAT(:times,'%')", nativeQuery = true)
     List<PartyInfo> findByMoveInfoStartDate(@Param("times") String times);
 
@@ -139,6 +141,7 @@ public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long>{
     List<PartyInfo> findMyPastListByDepartmentNoOrder(@Param("user_id") String user_id, @Param("user_id2") String user_id2, @Param("place") String place);
     @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') AND p.destination  LIKE  CONCAT(:place,'%') AND p.user_id = :user_id UNION SELECT p.* FROM party_info_table p LEFT OUTER JOIN party_info_car_pooler c ON p.id = c.party_info_id WHERE p.status in ('4') AND p.destination  LIKE  CONCAT(:place,'%') AND c.user_id = :user_id2 ORDER BY id DESC", nativeQuery = true)
     List<PartyInfo> findMyPastListByDestinationNoOrder(@Param("user_id") String user_id, @Param("user_id2") String user_id2, @Param("place") String place);
+
 
 /*
     //잘 안먹어서.. 그냥 쿼리로 함
