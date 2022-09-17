@@ -18,6 +18,7 @@ public interface PartyInfoService {
     // public List<PartyInfo> findAllList(String status, String condition);
 
     public long registMoveInfo(PartyInfo partyInfo);
+    public MessageEntity deleteMoveInfo(Long partyId);
     //public List<PartyInfo> findAllList(String status, String search_condition,String order_condition, String value);
     public List<PartyInfo> findAllList(String status, String departure, String destination, String start_date, String order);
  //   public List<PartyInfo> findMyList(String status, String condition, String user_id, String user_id2);

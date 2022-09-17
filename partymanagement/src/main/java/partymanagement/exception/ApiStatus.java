@@ -14,7 +14,9 @@ public enum ApiStatus {
     CANNOT_ADD_CARPOOLER(HttpStatus.NOT_MODIFIED, -802, "카풀러가 해당 파티에 있어 추가가 불가합니다."),
     ADDED_CARPOOLER(HttpStatus.ACCEPTED, -803, "카풀러가 해당 파티에 추가되었습니다."),
     CANNOT_REMOVE_CARPOOLER(HttpStatus.NOT_MODIFIED, -804, "카풀러가 해당 파티에 없어 삭제가 불가합니다. 관리자 확인이 필요합니다."),
-    REMOVED_CARPOOLER(HttpStatus.ACCEPTED, -805, "카풀러가 해당 파티에서 삭제되었습니다.")
+    REMOVED_CARPOOLER(HttpStatus.ACCEPTED, -805, "카풀러가 해당 파티에서 삭제되었습니다."),
+    CANNOT_REMOVE_PARTYINFO(HttpStatus.ACCEPTED, -806, "해당 파티가 삭제 불가합니다."),
+    REMOVED_PARTYINFO(HttpStatus.ACCEPTED, -807, "해당 파티가 삭제되었습니다.")
     ;
 
     private final HttpStatus httpStatus;

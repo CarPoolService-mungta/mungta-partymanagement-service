@@ -261,7 +261,11 @@ public class PartyInfoServiceImpl implements PartyInfoService{
         System.out.println("#운전정보 등록 id: "+ id);
         return id;
     }
-
+    @Override
+    public MessageEntity deleteMoveInfo(Long partyId) {
+        partyInfoRepository.delete(partyInfoRepository.findById(partyId).orElseThrow(() -> new ApiException(ApiStatus.CANNOT_REMOVE_PARTYINFO)));
+        return MessageEntity.of(ApiStatus.REMOVED_PARTYINFO);
+    }
     public List<String> findUserIdList(Long partyId){
         List<String> res = partyInfoRepository.findUserIdList(partyId, partyId);
         return res;

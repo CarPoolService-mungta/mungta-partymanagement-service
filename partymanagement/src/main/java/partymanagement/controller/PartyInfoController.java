@@ -77,7 +77,12 @@ public class PartyInfoController {
         long id = partyInfoService.registMoveInfo(payload);
         return ResponseEntity.created(URI.create("/api/carpool-info/"+id)).build();
     }
-
+    @Operation(summary = "운전정보 삭제")
+    @DeleteMapping(value="/delete-moveinfo")
+    public ResponseEntity<MessageEntity> deleteMoveInfo(@RequestParam(required = true) Long partyId){
+        MessageEntity response = partyInfoService.deleteMoveInfo(partyId);
+        return ResponseEntity.ok(response);
+    }
     @GetMapping(value="/carpool-summary-info")
     public ResponseEntity<PartyAccusationResponse> getSummaryInfo(@RequestParam(required = true) Long partyId){
 
