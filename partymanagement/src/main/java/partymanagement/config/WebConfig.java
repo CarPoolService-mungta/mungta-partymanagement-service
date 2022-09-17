@@ -7,14 +7,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 //@EnableWebMvc
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")      //패턴
-                .allowedOrigins("*") //URL
-                .allowedMethods("*")         //method
-                .allowedHeaders("*")       //Header
-                .allowCredentials(true)
-                .maxAge(3000);
-    }
+//Gateway Port로 사용 시
+//gateway yml에 cors 설정이 들어가 있어서 CORS 중복 에러가 발생하여 제거함.
+//[ERROR] The 'Access-Control-Allow-Origin' header contains multiple values
+    // @Override
+    // public void addCorsMappings(CorsRegistry registry) {
+    //     registry.addMapping("/**")      //패턴
+    //             .allowedOrigins("*") //URL
+    //             .allowedMethods("*")         //method
+    //             .allowedHeaders("*")       //Header
+    //             .allowCredentials(true)
+    //             .maxAge(3000);
+    // }
 }
