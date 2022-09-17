@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import partymanagement.domain.PartyInfo;
+import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
 import partymanagement.domain.vo.Driver;
 
@@ -24,4 +25,7 @@ public interface PartyInfoService {
     public PartyInfoResponse getPost(Long id);
     public List<PartyInfoResponse> getAllList(String status, String departure, String destination, String start_date, String condition);
     public List<PartyInfoResponse> getMyList(String status, String departure, String destination, String start_date, String condition, String user_id);
+    public List<String> findUserIdList(Long partyId);
+    public PartyAccusationResponse getSummaryInfo(Long partyId);
+
 }

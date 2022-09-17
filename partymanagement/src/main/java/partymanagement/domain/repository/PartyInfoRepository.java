@@ -24,7 +24,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long>{
 
 
-
+    @Query(value ="SELECT user_id FROM party_info_table WHERE id = :partyId UNION SELECT user_id FROM party_info_car_pooler WHERE party_info_id = :partyId2 ", nativeQuery = true)
+    List<String> findUserIdList(@Param("partyId") Long partyId, @Param("partyId2") Long partyId2);
 
     @Query(value ="SELECT p.* FROM party_info_table p WHERE p.start_date  LIKE  CONCAT(:times,'%')", nativeQuery = true)
     List<PartyInfo> findByMoveInfoStartDate(@Param("times") String times);

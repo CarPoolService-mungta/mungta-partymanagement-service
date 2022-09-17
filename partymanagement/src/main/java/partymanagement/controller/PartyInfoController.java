@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.Operation;
 import partymanagement.domain.*;
+import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
 import partymanagement.service.PartyInfoService;
 
@@ -74,6 +75,12 @@ public class PartyInfoController {
         return ResponseEntity.created(URI.create("/api/carpool-info/"+id)).build();
     }
 
+    @GetMapping(value="/carpool-summary-info")
+    public ResponseEntity<PartyAccusationResponse> getSummaryInfo(@RequestParam(required = true) Long partyId){
+
+        PartyAccusationResponse response = partyInfoService.getSummaryInfo(partyId);
+        return ResponseEntity.ok(response);
+    }
     // @GetMapping("/carpool-past-list")
     // public ResponseEntity<Map<String, Object>> getPastPostList(@RequestParam(required = false) String search_condition,@RequestParam(required = false) String order_condition, @RequestParam(required = false) String value) {
     //     return handler.handleSuccess(partyInfoService.findAllList("past",search_condition, order_condition, value));

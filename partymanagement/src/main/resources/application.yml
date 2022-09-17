@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8084
 
 ---
 
@@ -20,9 +20,12 @@ spring:
   #   console:
   #     enabled: true
   datasource:
-    url: jdbc:mysql://localhost:3307/testdb?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: root
+    # url: jdbc:mysql://localhost:3307/testdb?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    # username: root
+    # password: root
+    url: jdbc:mysql://party-management-db.mysql.database.azure.com:3306/party_management_dev?serverTimezone=Asia/Seoul&validationQuery="select 1"
+    username: mungta
+    password: andxk12#$
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
   jpa:

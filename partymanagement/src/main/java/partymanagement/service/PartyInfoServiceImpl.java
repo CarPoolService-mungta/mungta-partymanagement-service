@@ -1,8 +1,10 @@
 package partymanagement.service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Sort;
 import partymanagement.domain.PartyInfo;
 import partymanagement.domain.repository.PartyInfoRepository;
+import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
 import partymanagement.domain.vo.CarPooler;
 import partymanagement.domain.vo.CarPooler;
@@ -255,6 +258,22 @@ public class PartyInfoServiceImpl implements PartyInfoService{
         return id;
     }
 
+    public List<String> findUserIdList(Long partyId){
+        List<String> res = partyInfoRepository.findUserIdList(partyId, partyId);
+        return res;
+    }
+
+    public PartyAccusationResponse getSummaryInfo(Long partyId){
+        PartyInfo partyInfo = findById(partyId);
+        List<String> userIdList = findUserIdList(partyId);
+        return PartyAccusationResponse.builder()
+                                    .partyId(partyId)
+                                    .placeOfDeparture(partyInfo.getMoveInfo().getPlaceOfDeparture())
+                                    .destination(partyInfo.getMoveInfo().getDestination())
+                                    .startDate(LocalDateTimetoString(partyInfo.getMoveInfo().getStartDate()))
+                                    .userIds(userIdList).build();
+    }
+
     public PartyInfoResponse getPost(Long id){
         PartyInfo partyInfo = findById(id);
         return PartyInfoResponse.of(partyInfo);
@@ -264,5 +283,8 @@ public class PartyInfoServiceImpl implements PartyInfoService{
         return partyInfoRepository.findById(partyId).orElseThrow(() -> new ApiException(ApiStatus.NOT_FOUND_PARTYINFO));
     }
 
-
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+    public static String LocalDateTimetoString(LocalDateTime localDateTime) {
+           return DateTimeFormatter.ofPattern(DATE_TIME_PATTERN, Locale.KOREA).format(localDateTime);
+    }
 }
