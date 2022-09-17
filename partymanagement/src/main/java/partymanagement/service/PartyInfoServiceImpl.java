@@ -15,7 +15,10 @@ import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+
 import partymanagement.domain.PartyInfo;
 import partymanagement.domain.repository.PartyInfoRepository;
 import partymanagement.domain.response.PartyAccusationResponse;
@@ -26,6 +29,7 @@ import partymanagement.domain.vo.Driver;
 import partymanagement.domain.vo.MoveInfo;
 import partymanagement.exception.ApiException;
 import partymanagement.exception.ApiStatus;
+import partymanagement.exception.MessageEntity;
 
 @Service
 public class PartyInfoServiceImpl implements PartyInfoService{
@@ -286,5 +290,60 @@ public class PartyInfoServiceImpl implements PartyInfoService{
     private static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static String LocalDateTimetoString(LocalDateTime localDateTime) {
            return DateTimeFormatter.ofPattern(DATE_TIME_PATTERN, Locale.KOREA).format(localDateTime);
+    }
+
+    public MessageEntity addCarpooler(Long partyId, CarPooler carpooler){
+        PartyInfo partyInfo = findById(partyId);
+        List<CarPooler> carPoolers = partyInfo.getCarPooler();
+        System.out.println("added carpoolers");
+        try{
+            if(carPoolers.contains(carpooler)){
+                System.out.println("이미 있어");
+                return MessageEntity.of(ApiStatus.CANNOT_ADD_CARPOOLER);
+            }
+            System.out.print("ADD 전");
+            for(CarPooler c : carPoolers){
+                System.out.println(c);
+            }
+            carPoolers.add(carpooler);
+            System.out.print("ADD 후");
+            for(CarPooler c : carPoolers){
+                System.out.println(c);
+            }
+            partyInfo.setCarPooler(carPoolers);
+            partyInfoRepository.save(partyInfo);
+        }
+        catch(Exception e){
+            e.getStackTrace();
+        }
+        return MessageEntity.of(ApiStatus.ADDED_CARPOOLER);
+
+    }
+    public MessageEntity removeCarpooler(Long partyId, CarPooler carpooler){
+        PartyInfo partyInfo = findById(partyId);
+        List<CarPooler> carPoolers = partyInfo.getCarPooler();
+        System.out.println("removed carpoolers");
+        try{
+            if(!carPoolers.contains(carpooler)){
+                return MessageEntity.of(ApiStatus.CANNOT_REMOVE_CARPOOLER);
+            }
+            System.out.print("REMOVE 전");
+            for(CarPooler c : carPoolers){
+                System.out.println(c);
+            }
+            carPoolers.remove(carPoolers.indexOf(carpooler));
+            System.out.print("REMOVE 후");
+            for(CarPooler c : carPoolers){
+                System.out.println(c);
+            }
+            partyInfo.setCarPooler(carPoolers);
+            partyInfoRepository.save(partyInfo);
+        }
+        catch(Exception e){
+
+            e.getStackTrace();
+        }
+        return MessageEntity.of(ApiStatus.REMOVED_CARPOOLER);
+
     }
 }

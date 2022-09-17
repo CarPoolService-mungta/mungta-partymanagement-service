@@ -30,7 +30,7 @@ public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long>{
     @Query(value ="SELECT p.* FROM party_info_table p WHERE p.start_date  LIKE  CONCAT(:times,'%')", nativeQuery = true)
     List<PartyInfo> findByMoveInfoStartDate(@Param("times") String times);
 
-
+    
     //# 현재 전체 카풀리스트를 검색 (OPEN, FULL)
     //native query를 사용하는 경우 sort 불가
     // @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1','3') ORDER BY :search_condition DESC", nativeQuery = true)

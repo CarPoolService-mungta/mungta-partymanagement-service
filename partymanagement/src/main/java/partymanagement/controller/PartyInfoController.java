@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.Operation;
 import partymanagement.domain.*;
+import partymanagement.domain.request.CarpoolerInfoRequest;
 import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
+import partymanagement.domain.vo.CarPooler;
 import partymanagement.service.PartyInfoService;
 
+import partymanagement.exception.MessageEntity;
 
 //@CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
@@ -80,6 +83,43 @@ public class PartyInfoController {
 
         PartyAccusationResponse response = partyInfoService.getSummaryInfo(partyId);
         return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "카풀러 추가")
+    @PostMapping(value="/post-carpooler-info", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageEntity> addCarPoolerInfo(@RequestBody CarpoolerInfoRequest payload){
+        System.out.println(payload);
+        CarPooler carpoolerInfo =  CarPooler.builder()
+                                            .userId(payload.getUserId())
+                                            .name(payload.getName())
+                                            .profileImage(payload.getProfileImage())
+                                            .department(payload.getDepartment())
+                                            .carpoolerCheck(payload.getCarpoolerCheck())
+                                            .driverCheck(payload.getDriverCheck())
+                                            .carpoolingStatus(payload.getCarpoolingStatus())
+                                            .startDate(payload.getStartDate())
+                                            .build();
+        MessageEntity response = partyInfoService.addCarpooler(payload.getPartyId(), carpoolerInfo);
+        return ResponseEntity.ok(response);
+        //return ResponseEntity.created(URI.create("/api/carpool-info/"+id)).build();
+    }
+    @Operation(summary = "카풀러 제거")
+    @PostMapping(value="/delete-carpooler-info", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageEntity> deleteCarPoolerInfo(@RequestBody CarpoolerInfoRequest payload){
+        System.out.println(payload);
+        CarPooler carpoolerInfo =  CarPooler.builder()
+                                            .userId(payload.getUserId())
+                                            .name(payload.getName())
+                                            .profileImage(payload.getProfileImage())
+                                            .department(payload.getDepartment())
+                                            .carpoolerCheck(payload.getCarpoolerCheck())
+                                            .driverCheck(payload.getDriverCheck())
+                                            .carpoolingStatus(payload.getCarpoolingStatus())
+                                            .startDate(payload.getStartDate())
+                                            .build();
+        MessageEntity response = partyInfoService.removeCarpooler(payload.getPartyId(), carpoolerInfo);
+        return ResponseEntity.ok(response);
+        //return ResponseEntity.created(URI.create("/api/carpool-info/"+id)).build();
     }
     // @GetMapping("/carpool-past-list")
     // public ResponseEntity<Map<String, Object>> getPastPostList(@RequestParam(required = false) String search_condition,@RequestParam(required = false) String order_condition, @RequestParam(required = false) String value) {

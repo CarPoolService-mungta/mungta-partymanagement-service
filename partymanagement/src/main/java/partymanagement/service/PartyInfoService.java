@@ -7,7 +7,9 @@ import java.util.Optional;
 import partymanagement.domain.PartyInfo;
 import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
+import partymanagement.domain.vo.CarPooler;
 import partymanagement.domain.vo.Driver;
+import partymanagement.exception.MessageEntity;
 
 public interface PartyInfoService {
 
@@ -27,5 +29,6 @@ public interface PartyInfoService {
     public List<PartyInfoResponse> getMyList(String status, String departure, String destination, String start_date, String condition, String user_id);
     public List<String> findUserIdList(Long partyId);
     public PartyAccusationResponse getSummaryInfo(Long partyId);
-
+    public MessageEntity addCarpooler(Long partyId, CarPooler carpooler);
+    public MessageEntity removeCarpooler(Long partyId, CarPooler carpooler);
 }
