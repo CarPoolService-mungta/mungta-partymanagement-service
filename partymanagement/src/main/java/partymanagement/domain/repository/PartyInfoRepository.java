@@ -35,12 +35,12 @@ public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long>{
     //native query를 사용하는 경우 sort 불가
     // @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1','3') ORDER BY :search_condition DESC", nativeQuery = true)
     // List<PartyInfo> findAllNowList();
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') ORDER BY start_date DESC", nativeQuery = true)
-    List<PartyInfo> findAllNowListByStartDateDesc();
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') ORDER BY review_average_score DESC", nativeQuery = true)
-    List<PartyInfo> findAllNowListByReviewAverageScoreDesc();
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') ORDER BY id DESC", nativeQuery = true)
-    List<PartyInfo> findAllNowListNoCondition();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') AND p.user_id <> :userId ORDER BY start_date DESC", nativeQuery = true)
+    List<PartyInfo> findAllNowListByStartDateDesc(@Param("userId") String userId);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') AND p.user_id <> :userId ORDER BY review_average_score DESC", nativeQuery = true)
+    List<PartyInfo> findAllNowListByReviewAverageScoreDesc(@Param("userId") String userId);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') AND p.user_id <> :userId ORDER BY id DESC", nativeQuery = true)
+    List<PartyInfo> findAllNowListNoCondition(@Param("userId") String userId);
 
     @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('0','1') AND p.start_date  LIKE  CONCAT(:times,'%') ORDER BY start_date DESC", nativeQuery = true)
     List<PartyInfo> findAllNowListByStartDateOrderByStartDateDesc(@Param("times") String times);
@@ -68,14 +68,14 @@ public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long>{
     //native query를 사용하는 경우 sort 불가
     // @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY :search_condition DESC", nativeQuery = true)
     // List<PartyInfo> findAllPastList(@Param("search_condition") String search_condition);
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY start_date DESC", nativeQuery = true)
-    List<PartyInfo> findAllPastListByStartDateDesc();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') AND p.user_id <> :userId ORDER BY start_date DESC", nativeQuery = true)
+    List<PartyInfo> findAllPastListByStartDateDesc(@Param("userId") String userId);
     @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY distance ASC", nativeQuery = true)
     List<PartyInfo> findAllPastListByDistanceDesc();
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY review_average_score DESC", nativeQuery = true)
-    List<PartyInfo> findAllPastListByReviewAverageScoreDesc();
-    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') ORDER BY id DESC", nativeQuery = true)
-    List<PartyInfo> findAllPastListNoCondition();
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') AND p.user_id <> :userId ORDER BY review_average_score DESC", nativeQuery = true)
+    List<PartyInfo> findAllPastListByReviewAverageScoreDesc(@Param("userId") String userId);
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE p.status in ('4') AND p.user_id <> :userId ORDER BY id DESC", nativeQuery = true)
+    List<PartyInfo> findAllPastListNoCondition(@Param("userId") String userId);
 
     //# 현재 진행 중인 카풀 중 본인이 포함된 카풀리스트를 검색 (OPEN, FULL, STARTED)
     /* native query를 사용하는 경우 sort 불가*/

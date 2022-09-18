@@ -64,7 +64,7 @@ public class PartyInfoServiceImpl implements PartyInfoService{
     //     }
     // }
     @Override
-    public List<PartyInfo> findAllList(String status, String departure, String destination, String start_date, String order){
+    public List<PartyInfo> findAllList(String status, String departure, String destination, String start_date, String order, String userId){
         if(departure == null) departure ="";
         if(destination == null) destination ="";
         if(start_date == null) start_date ="";
@@ -72,15 +72,15 @@ public class PartyInfoServiceImpl implements PartyInfoService{
         if(status.equals("now"))
         {
             switch(order){
-                case "start_date": return partyInfoRepository.findAllNowListByStartDateDesc();
-                case "review_average_score": return partyInfoRepository.findAllNowListByReviewAverageScoreDesc();
-                default : return partyInfoRepository.findAllNowListNoCondition();
+                case "start_date": return partyInfoRepository.findAllNowListByStartDateDesc(userId);
+                case "review_average_score": return partyInfoRepository.findAllNowListByReviewAverageScoreDesc(userId);
+                default : return partyInfoRepository.findAllNowListNoCondition(userId);
             }
         }else{
             switch(order){
-                case "start_date": return partyInfoRepository.findAllPastListByStartDateDesc();
-                case "review_average_score": return partyInfoRepository.findAllPastListByReviewAverageScoreDesc();
-                default : return partyInfoRepository.findAllPastListNoCondition();
+                case "start_date": return partyInfoRepository.findAllPastListByStartDateDesc(userId);
+                case "review_average_score": return partyInfoRepository.findAllPastListByReviewAverageScoreDesc(userId);
+                default : return partyInfoRepository.findAllPastListNoCondition(userId);
             }
         }
     }
@@ -149,8 +149,8 @@ public class PartyInfoServiceImpl implements PartyInfoService{
         }
     }
 
-    public List<PartyInfoResponse> getAllList(String status, String departure, String destination, String start_date, String condition){
-        List<PartyInfo> res = findAllList(status, departure, destination, start_date, condition);
+    public List<PartyInfoResponse> getAllList(String status, String departure, String destination, String start_date, String condition, String userId){
+        List<PartyInfo> res = findAllList(status, departure, destination, start_date, condition, userId);
         List<PartyInfoResponse> getAllList = res.stream().map(PartyInfoResponse::of).collect(Collectors.toList());
         return getAllList;
     }
@@ -266,6 +266,7 @@ public class PartyInfoServiceImpl implements PartyInfoService{
         partyInfoRepository.delete(partyInfoRepository.findById(partyId).orElseThrow(() -> new ApiException(ApiStatus.CANNOT_REMOVE_PARTYINFO)));
         return MessageEntity.of(ApiStatus.REMOVED_PARTYINFO);
     }
+
     public List<String> findUserIdList(Long partyId){
         List<String> res = partyInfoRepository.findUserIdList(partyId, partyId);
         return res;
