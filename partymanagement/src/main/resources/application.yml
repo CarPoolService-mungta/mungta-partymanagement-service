@@ -29,36 +29,67 @@ spring:
        binder:
          brokers: localhost:9092
        bindings:
-         partyCreated-out:
+         partyRegistered-out:
            producer:
              configuration:
                key:
                  serializer: org.apache.kafka.common.serialization.StringSerializer
+         partyRegisteredReject-in-0:
+           consumer:
+             configuration:
+               key:
+                 deserializer: org.apache.kafka.common.serialization.StringDeserializer
          partyStatusChanged-in-0:
            consumer:
              configuration:
                key:
                  deserializer: org.apache.kafka.common.serialization.StringDeserializer
+         partyStatusChangedReject-out:
+           producer:
+             configuration:
+               key:
+                 serializer: org.apache.kafka.common.serialization.StringSerializer
          partyMemberAccept-in-0:
            consumer:
              configuration:
                key:
                  deserializer: org.apache.kafka.common.serialization.StringDeserializer
+         partyMemberAcceptReject-out:
+           producer:
+             configuration:
+               key:
+                 serializer: org.apache.kafka.common.serialization.StringSerializer
          partyMemberCanceled-in-0:
            consumer:
              configuration:
                key:
                  deserializer: org.apache.kafka.common.serialization.StringDeserializer
+         partyMemberCanceledReject-out:
+           producer:
+             configuration:
+               key:
+                 serializer: org.apache.kafka.common.serialization.StringSerializer
      bindings:
        partyRegistered-out:
          destination: party-registered
          contentType: application/json
+       partyRegisteredReject-in-0:
+         destination: party-registered-reject
        partyStatusChanged-in-0:
          destination: party-status-changed
+       partyStatusChangedReject-out:
+         destination: party-status-changed-reject
+         contentType: application/json
        partyMemberAccept-in-0:
          destination: party-member-accept
+       partyMemberAcceptReject-out:
+         destination: party-member-accept-reject
+         contentType: application/json
        partyMemberCanceled-in-0:
          destination: party-member-canceled
+       partyMemberCanceledReject-out:
+         destination: party-member-canceled-reject
+         contentType: application/json
 
 logging:
   level:

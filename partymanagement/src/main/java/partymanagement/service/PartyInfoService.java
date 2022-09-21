@@ -5,6 +5,7 @@ import java.util.List;
 import partymanagement.domain.PartyInfo;
 import partymanagement.domain.event.MatchAccepted;
 import partymanagement.domain.event.MatchCancelled;
+import partymanagement.domain.event.PartyRegistered;
 import partymanagement.domain.event.PartyStatusChanged;
 import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
@@ -35,4 +36,5 @@ public interface PartyInfoService {
     public void changePartyStatus(PartyStatusChanged partyStatusChanged);
     public void acceptCarpooler(MatchAccepted matchAccepted);
     public void cancelCarpoolerApply(MatchCancelled matchCancelled);
+    public long registMoveInfoRollback(PartyRegistered partyRegistered);
 }

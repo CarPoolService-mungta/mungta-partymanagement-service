@@ -16,5 +16,6 @@ public class MatchAccepted extends AbstractEvent {
     private Long partyInfoId;
     private String userId;
     private CarpoolingStatus matchStatus;
+    private CarpoolingStatus pastMatchStatus;
 
 }

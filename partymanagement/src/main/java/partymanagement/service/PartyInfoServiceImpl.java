@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import partymanagement.domain.PartyInfo;
 import partymanagement.domain.enumeration.CarpoolingStatus;
+import partymanagement.domain.enumeration.PartyStatus;
 import partymanagement.domain.enumeration.PayCheck;
 import partymanagement.domain.event.MatchAccepted;
 import partymanagement.domain.event.MatchCancelled;
@@ -125,6 +126,18 @@ public class PartyInfoServiceImpl implements PartyInfoService{
 
         System.out.println("#운전정보 등록 id: "+ id);
         return id;
+    }
+
+    @Override
+    @Transactional
+    public long registMoveInfoRollback(PartyRegistered partyRegistered) {
+
+        PartyInfo partyInfo = findById(partyRegistered.getPartyId());
+
+        partyInfo.setStatus(PartyStatus.REJECT);
+        partyInfo.getCarPoolers().forEach(o->o.setCarpoolingStatus(CarpoolingStatus.REJECT));
+
+        return partyRegistered.getPartyId();
     }
     @Override
     public MessageEntity deleteMoveInfo(Long partyId) {
@@ -248,8 +261,22 @@ public class PartyInfoServiceImpl implements PartyInfoService{
                 .driverCheck(PayCheck.NOTPAID)
                 .build();
 
+        addPartyNumber(partyInfo);
+
         partyInfo.addCarpooler(carPooler);
     }
+
+    public void addPartyNumber(PartyInfo party) {
+        int restNumber = party.getCurNumberOfParty() + 1;
+//        if(restNumber == party.getMaxNumberOfParty()){
+//            party.setStatus(PartyStatus.FULL);
+//        }
+        if (restNumber > party.getMaxNumberOfParty()) {
+            throw new ApiException(ApiStatus.EXCEED_MAX_NUMBER);
+        }
+        party.setCurNumberOfParty(restNumber);
+    }
+
 
     @Override
     @Transactional
