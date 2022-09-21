@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import io.swagger.v3.oas.annotations.Operation;
 import partymanagement.domain.*;
 import partymanagement.domain.request.CarpoolerInfoRequest;
+import partymanagement.domain.request.PayCheckRequest;
 import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
 import partymanagement.domain.vo.CarPooler;
@@ -138,5 +139,28 @@ public class PartyInfoController {
         MessageEntity response = partyInfoService.removeCarpooler(payload.getPartyId(), carpoolerInfo);
         return ResponseEntity.ok(response);
         //return ResponseEntity.created(URI.create("/api/carpool-info/"+id)).build();
+    }
+
+    @Operation(summary = "정산 확인 요청")
+    @PostMapping(value="/request-pay-check")
+    public ResponseEntity requestPayCheck(@RequestBody PayCheckRequest payload){
+        partyInfoService.requestPayCheck(payload);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "정산 확인")
+    @PostMapping(value="/check-payment")
+    public ResponseEntity checkPayment(@RequestBody PayCheckRequest payload){
+        partyInfoService.checkPayment(payload);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "정산 확인")
+    @PostMapping(value="/retry-payment")
+    public ResponseEntity retryPayment(@RequestBody PayCheckRequest payload){
+        partyInfoService.retryPayment(payload);
+
+        return ResponseEntity.noContent().build();
     }
 }

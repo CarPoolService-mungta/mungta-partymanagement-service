@@ -22,6 +22,7 @@ import partymanagement.domain.event.MatchCancelled;
 import partymanagement.domain.event.PartyRegistered;
 import partymanagement.domain.event.PartyStatusChanged;
 import partymanagement.domain.repository.PartyInfoRepository;
+import partymanagement.domain.request.PayCheckRequest;
 import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
 import partymanagement.domain.response.UserResponse;
@@ -291,6 +292,47 @@ public class PartyInfoServiceImpl implements PartyInfoService{
             new ApiException(ApiStatus.CANNOT_REMOVE_CARPOOLER);
         }
         carPooler.setCarpoolingStatus(CarpoolingStatus.CANCEL);
+
+    }
+
+    public CarPooler findCarpooler(Long partyId, String userId){
+        PartyInfo partyInfo = findById(partyId);
+
+        return partyInfo.getCarPoolers().stream()
+                .filter(o->o.getUserId().equals(userId))
+                .findFirst()
+                .orElseThrow(()->new ApiException(ApiStatus.CANNOT_FOUND_CARPOOLER));
+    }
+
+    //정산 확인 요청
+    @Override
+    @Transactional
+    public void requestPayCheck(PayCheckRequest payCheckRequest){
+        CarPooler carPooler=findCarpooler(payCheckRequest.getPartyId(), payCheckRequest.getCarpoolerId());
+
+        carPooler.setCarpoolerCheck(PayCheck.PAID);
+
+
+    }
+    //정산 확인
+    @Override
+    @Transactional
+    public void checkPayment(PayCheckRequest payCheckRequest){
+
+        CarPooler carPooler=findCarpooler(payCheckRequest.getPartyId(), payCheckRequest.getCarpoolerId());
+
+        carPooler.setDriverCheck(PayCheck.PAID);
+
+    }
+
+    //정산 재요청
+    @Override
+    @Transactional
+    public void retryPayment(PayCheckRequest payCheckRequest){
+
+        CarPooler carPooler=findCarpooler(payCheckRequest.getPartyId(), payCheckRequest.getCarpoolerId());
+
+        carPooler.setCarpoolerCheck(PayCheck.RETRY);
 
     }
 

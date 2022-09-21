@@ -7,6 +7,7 @@ import partymanagement.domain.event.MatchAccepted;
 import partymanagement.domain.event.MatchCancelled;
 import partymanagement.domain.event.PartyRegistered;
 import partymanagement.domain.event.PartyStatusChanged;
+import partymanagement.domain.request.PayCheckRequest;
 import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
 import partymanagement.domain.vo.CarPooler;
@@ -37,4 +38,7 @@ public interface PartyInfoService {
     public void acceptCarpooler(MatchAccepted matchAccepted);
     public void cancelCarpoolerApply(MatchCancelled matchCancelled);
     public long registMoveInfoRollback(PartyRegistered partyRegistered);
+    public void retryPayment(PayCheckRequest payCheckRequest);
+    public void checkPayment(PayCheckRequest payCheckRequest);
+    public void requestPayCheck(PayCheckRequest payCheckRequest);
 }
