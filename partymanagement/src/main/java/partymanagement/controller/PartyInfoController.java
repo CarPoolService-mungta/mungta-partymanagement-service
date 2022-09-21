@@ -24,15 +24,12 @@ import partymanagement.exception.MessageEntity;
 //@CrossOrigin(origins = {"*"}, maxAge = 6000)
 @RestController
 @RequestMapping(value = "/api/party-management/partyInfos")
-//@RequestMapping(value = "/api/partyInfos")
 @Transactional
 public class PartyInfoController {
 
 
     @Autowired
     PartyInfoService partyInfoService;
-
-    // private final HandlerUtils handler = HandlerUtils.getInstance();
 
     @Operation(summary = "카풀 상세 정보")
     @GetMapping("/carpool-info")
@@ -83,6 +80,7 @@ public class PartyInfoController {
         return  ResponseEntity.ok(response);
     }
 
+
     @Operation(summary = "운전정보 등록")
     @PostMapping(value="/post-moveinfo", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> postMoveInfo(@RequestBody PartyInfo payload){
@@ -102,6 +100,7 @@ public class PartyInfoController {
         return ResponseEntity.ok(response);
     }
 
+    @Deprecated
     @Operation(summary = "카풀러 추가")
     @PostMapping(value="/post-carpooler-info", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageEntity> addCarPoolerInfo(@RequestBody CarpoolerInfoRequest payload){
@@ -120,6 +119,8 @@ public class PartyInfoController {
         return ResponseEntity.ok(response);
         //return ResponseEntity.created(URI.create("/api/carpool-info/"+id)).build();
     }
+
+    @Deprecated
     @Operation(summary = "카풀러 제거")
     @PostMapping(value="/delete-carpooler-info", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageEntity> deleteCarPoolerInfo(@RequestBody CarpoolerInfoRequest payload){

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.ToString;
 import partymanagement.domain.enumeration.CarpoolingStatus;
 import partymanagement.domain.enumeration.PayCheck;
-import partymanagement.domain.vo.CarPooler;
 
 @Data
 @Builder

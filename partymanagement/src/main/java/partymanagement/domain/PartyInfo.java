@@ -1,17 +1,19 @@
 package partymanagement.domain;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import partymanagement.PartyManagementApplication;
-import partymanagement.domain.event.SelectedRole;
 import partymanagement.domain.repository.PartyInfoRepository;
 import partymanagement.domain.vo.*;
 import partymanagement.domain.enumeration.*;
+import partymanagement.exception.ApiException;
+import partymanagement.exception.ApiStatus;
 
 @Entity
 @Table(name = "PartyInfo_table")
@@ -31,17 +33,9 @@ public class PartyInfo {
     private MoveInfo moveInfo;
 
     @ElementCollection
-    private List<CarPooler> carPooler;
+    private List<CarPooler> carPoolers;
 
     private PartyStatus status;
-
-    // @PostPersist
-    // public void onPostPersist() {
-    //     SelectedRole selectedRole = new SelectedRole(this);
-    //     System.out.println("######################PartyInfo 저장!");
-    //     System.out.println("id:"+id+" curNumberOfParty");
-    //     selectedRole.publishAfterCommit();
-    // }
 
     public static PartyInfoRepository repository() {
         PartyInfoRepository partyInfoRepository = PartyManagementApplication.applicationContext.getBean(
@@ -60,13 +54,24 @@ public class PartyInfo {
         setStatus(status);
     }
     @Builder
-    public PartyInfo(int curNumberOfParty, int maxNumberOfParty, Driver driver, MoveInfo moveInfo, PartyStatus status, List<CarPooler> carPooler){
+    public PartyInfo(int curNumberOfParty, int maxNumberOfParty, Driver driver, MoveInfo moveInfo, PartyStatus status, List<CarPooler> carPoolers){
         setCurNumberOfParty(curNumberOfParty);
         setMaxNumberOfParty(maxNumberOfParty);
         setDriver(driver);
         setMoveInfo(moveInfo);
         setStatus(status);
-        setCarPooler(carPooler);
+        setCarPoolers(carPoolers);
+    }
+
+    public void addCarpooler(CarPooler carPooler){
+        if(carPoolers==null){
+            carPoolers= new ArrayList<>();
+        }
+        CarPooler alreadyCarpooler = carPoolers.stream().filter(o->o.getUserId().equals(carPooler)).findFirst().orElse(null);
+        if(!Objects.isNull(alreadyCarpooler)){
+            new ApiException(ApiStatus.CANNOT_ADD_CARPOOLER);
+        }
+        carPoolers.add(carPooler);
     }
     public void selectRole() {}
 }

@@ -1,14 +1,14 @@
 package partymanagement.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import partymanagement.domain.PartyInfo;
+import partymanagement.domain.event.MatchAccepted;
+import partymanagement.domain.event.MatchCancelled;
+import partymanagement.domain.event.PartyStatusChanged;
 import partymanagement.domain.response.PartyAccusationResponse;
 import partymanagement.domain.response.PartyInfoResponse;
 import partymanagement.domain.vo.CarPooler;
-import partymanagement.domain.vo.Driver;
 import partymanagement.exception.MessageEntity;
 
 public interface PartyInfoService {
@@ -23,7 +23,7 @@ public interface PartyInfoService {
     public List<PartyInfo> findAllList(String status, String departure, String destination, String start_date, String order, String userId);
  //   public List<PartyInfo> findMyList(String status, String condition, String user_id, String user_id2);
     // public List<PartyInfo> findMyList(String status, String search_condition, String order_condition, String value, String user_id, String user_id2);
-    public List<PartyInfo> findMyList(String status, String departure, String destination, String start_date, String order, String user_id, String user_id2);
+    public List<PartyInfo> findMyList(String status, String departure, String destination, String start_date, String order, String user_id);
     public PartyInfo findById(Long partyId);
     public PartyInfoResponse getPost(Long id);
     public List<PartyInfoResponse> getAllList(String status, String departure, String destination, String start_date, String condition, String userId);
@@ -32,4 +32,7 @@ public interface PartyInfoService {
     public PartyAccusationResponse getSummaryInfo(Long partyId);
     public MessageEntity addCarpooler(Long partyId, CarPooler carpooler);
     public MessageEntity removeCarpooler(Long partyId, CarPooler carpooler);
+    public void changePartyStatus(PartyStatusChanged partyStatusChanged);
+    public void acceptCarpooler(MatchAccepted matchAccepted);
+    public void cancelCarpoolerApply(MatchCancelled matchCancelled);
 }

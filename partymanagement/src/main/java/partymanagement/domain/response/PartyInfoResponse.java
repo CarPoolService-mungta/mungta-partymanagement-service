@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import partymanagement.domain.vo.CarPooler;
 import partymanagement.domain.vo.*;
 import partymanagement.domain.PartyInfo;
 import partymanagement.domain.enumeration.*;
@@ -29,7 +30,7 @@ public class PartyInfoResponse {
                     .maxNumberOfParty(partyInfo.getMaxNumberOfParty())
                     .driver(partyInfo.getDriver())
                     .moveInfo(partyInfo.getMoveInfo())
-                    .carPooler(partyInfo.getCarPooler())
+                    .carPooler(partyInfo.getCarPoolers())
                     .status(partyInfo.getStatus())
                     .build();
     }

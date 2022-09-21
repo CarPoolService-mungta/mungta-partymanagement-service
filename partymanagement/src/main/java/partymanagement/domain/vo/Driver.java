@@ -21,8 +21,6 @@ public class Driver {
 
     private String name;
 
-    private String profileImage;
-
     private String gender;
 
     private String department;
@@ -40,7 +38,6 @@ public class Driver {
     public Driver(String userId, String name, String profileImage, String gender, String department, String carNumber, String carKind, String settlementUrl, ReviewInfo reviewInfo){
         setUserId(userId);
         setName(name);
-        setProfileImage(profileImage);
         setGender(gender);
         setDepartment(department);
         setCarNumber(carNumber);
