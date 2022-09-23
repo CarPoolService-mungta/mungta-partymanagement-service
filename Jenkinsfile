@@ -13,28 +13,28 @@ pipeline {
   stages {
     stage('Build') {
         steps {
-            slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+            //slackSend (color: '#FFFF00', message: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
             sh './mvnw compile'
         }
     }
-    stage('Unit Test') {
-        steps {
-            sh './mvnw test'
-        }
-        post {
-            always {
-                junit 'target/surefire-reports/*.xml'
-                step([ $class: 'JacocoPublisher' ])
-            }
-        }
-    }
-    stage('Static Code Analysis') {
-        steps {
-            configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
-                sh './mvnw sonar:sonar -s $MAVEN_SETTINGS'
-            }
-        }
-    }
+    // stage('Unit Test') {
+    //     steps {
+    //         sh './mvnw test'
+    //     }
+    //     post {
+    //         always {
+    //             junit 'target/surefire-reports/*.xml'
+    //             step([ $class: 'JacocoPublisher' ])
+    //         }
+    //     }
+    // }
+    // stage('Static Code Analysis') {
+    //     steps {
+    //         configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
+    //             sh './mvnw sonar:sonar -s $MAVEN_SETTINGS'
+    //         }
+    //     }
+    // }
     stage('Package') {
         steps {
             sh './mvnw package -DskipTests'
@@ -101,12 +101,12 @@ pipeline {
 //         }
 //     }
   }
-  post {
-      success {
-          slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-      }
-      failure {
-          slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-      }
-  }
+//   post {
+//       success {
+//           slackSend (color: '#00FF00', message: "SUCCESSFUL: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+//       }
+//       failure {
+//           slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+//       }
+//   }
 }
