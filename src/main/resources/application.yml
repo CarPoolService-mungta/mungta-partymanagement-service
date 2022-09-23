@@ -100,7 +100,16 @@ api:
   url:
     user: http://localhost:8081/api/user
 
-
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
 
 # server:
 #   port: 8081
