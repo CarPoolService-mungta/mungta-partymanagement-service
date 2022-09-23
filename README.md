@@ -9,17 +9,6 @@ mvn spring-boot:run
 ## 특이사항
 
 ```
-1. 로컬 카프카 안키려고 이벤트는 다 꺼놓은 상태
-2. ExceptionHandler 편하게 쓰려고 해놨던 거 아직 유지중(infra/HandlerUtils.java) 추후 변경 예정
-3. 현재 문제 spring-boot에서 json 데이터를 못가져오는 것 같음
-  3.1 Jackson databind Pom.xml 추가
-
-  <dependency>
-		<groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-databind</artifactId>
-	</dependency>
-  3.2 PartyInfoContorller.java에서 postMoveInfo~메소드 여러개로 테스트 중
-  3.3 front-end에서는 moveInfoRegister.js에서 호출 중
 ```
 
 ## 필요기능 정의
