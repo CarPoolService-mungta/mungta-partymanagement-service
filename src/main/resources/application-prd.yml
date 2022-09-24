@@ -98,7 +98,7 @@ logging:
 
 api:
   url:
-    user: http://user:8081/api/user
+    user: http://user:8080/api/user
 
 management:
   endpoint:
