@@ -98,7 +98,7 @@ logging:
 
 api:
   url:
-    user: http://localhost:8081/api/user
+    user: http://user:8081/api/user
 
 management:
   endpoint:

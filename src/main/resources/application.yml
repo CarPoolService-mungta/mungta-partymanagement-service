@@ -1,10 +1,10 @@
 server:
-  port: 8080
+  port: 8084
 
 ---
 
 spring:
-  profiles: default
+  profiles: local
   datasource:
     url: jdbc:mysql://party-management-db.mysql.database.azure.com:3306/party_management_dev?serverTimezone=Asia/Seoul&validationQuery="select 1"
     username: mungta
