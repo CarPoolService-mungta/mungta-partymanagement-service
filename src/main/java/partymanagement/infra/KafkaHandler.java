@@ -42,6 +42,7 @@ public class KafkaHandler {
         try{
             partyInfoService.acceptCarpooler(matchAccepted);
         }catch (Exception e){
+            log.error("error: ", e);
             kafkaProducer.send("partyMemberAcceptReject-out",matchAccepted);
         }
 
