@@ -249,9 +249,11 @@ public class PartyInfoServiceImpl implements PartyInfoService{
     @Transactional
     public void acceptCarpooler(MatchAccepted matchAccepted){
         PartyInfo partyInfo = findById(matchAccepted.getPartyInfoId());
+        System.out.println("partyInfo.Id:"+ partyInfo.getId());
         List<UserResponse> userResponseList = userServiceClient.getUserList(new ArrayList<>(){
             {add(matchAccepted.getUserId());}
         });
+        System.out.println("userResponseList.list.id:"+ userResponseList.get(0).getUserId());
 
         CarPooler carPooler=CarPooler.builder()
                 .userId(matchAccepted.getUserId())
@@ -262,7 +264,9 @@ public class PartyInfoServiceImpl implements PartyInfoService{
                 .driverCheck(PayCheck.NOTPAID)
                 .build();
 
+        System.out.println("carPooler.id:"+ carPooler.getUserId());
         addPartyNumber(partyInfo);
+        System.out.println("partyInfo.curNumber:"+ partyInfo.getCurNumberOfParty());
 
         partyInfo.addCarpooler(carPooler);
     }
