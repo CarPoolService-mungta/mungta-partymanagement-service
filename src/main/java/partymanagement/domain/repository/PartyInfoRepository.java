@@ -10,19 +10,13 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import partymanagement.domain.*;
 import partymanagement.domain.vo.Driver;
 
-// @RepositoryRestResource(
-//     collectionResourceRel = "partyInfos",
-//     path = "partyInfos"
-// )
-// public interface PartyInfoRepository
-//     extends PagingAndSortingRepository<PartyInfo, Long> {
-
-//     Optional<PartyInfo> findByUserId(String userId);}
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 public interface PartyInfoRepository extends JpaRepository<PartyInfo, Long>{
 
+
+    @Query(value ="SELECT p.* FROM party_info_table p WHERE id in (:partyIds)", nativeQuery = true)
+    List<PartyInfo> findAllById(List<Long> partyIds);
 
     @Query(value ="SELECT user_id FROM party_info_table WHERE id = :partyId UNION SELECT user_id FROM party_info_car_poolers WHERE party_info_id = :partyId2 ", nativeQuery = true)
     List<String> findUserIdList(@Param("partyId") Long partyId, @Param("partyId2") Long partyId2);

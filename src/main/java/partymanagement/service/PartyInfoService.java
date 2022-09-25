@@ -28,6 +28,7 @@ public interface PartyInfoService {
     public List<PartyInfo> findMyList(String status, String departure, String destination, String start_date, String order, String user_id);
     public PartyInfo findById(Long partyId);
     public PartyInfoResponse getPost(Long id);
+    public List<PartyInfoResponse> getPartyList(List<Long> partyIds);
     public List<PartyInfoResponse> getAllList(String status, String departure, String destination, String start_date, String condition, String userId);
     public List<PartyInfoResponse> getMyList(String status, String departure, String destination, String start_date, String condition, String user_id);
     public List<String> findUserIdList(Long partyId);

@@ -40,6 +40,12 @@ public class PartyInfoController {
         return  ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "카풀 리스트 id로 조회")
+    @GetMapping("/carpool-list-with-id")
+    public ResponseEntity<List<PartyInfoResponse>> getPostList(@RequestParam List<Long> partyIds) {
+        List<PartyInfoResponse> response =partyInfoService.getPartyList(partyIds);
+        return  ResponseEntity.ok(response);
+    }
     @Operation(summary = "현재 카풀리스트 조회")
     @GetMapping("/carpool-now-list")
     public ResponseEntity<List<PartyInfoResponse>> getPostList(@RequestHeader("userId") String userId,

@@ -95,6 +95,14 @@ public class PartyInfoServiceImpl implements PartyInfoService{
     }
 
     @Override
+    public List<PartyInfoResponse> getPartyList(List<Long> partyIds){
+
+        List<PartyInfo> partyInfos = partyInfoRepository.findAllById(partyIds);
+        return partyInfoRepository.findAllById(partyIds)
+                .stream().map(PartyInfoResponse::of)
+                .collect(Collectors.toList());
+    }
+    @Override
     public List<PartyInfoResponse> getAllList(String status, String departure, String destination, String start_date, String condition, String userId){
         List<PartyInfo> res = findAllList(status, departure, destination, start_date, condition, userId);
         List<PartyInfoResponse> getAllList = res.stream().map(PartyInfoResponse::of).collect(Collectors.toList());
