@@ -289,7 +289,17 @@ public class PartyInfoServiceImpl implements PartyInfoService{
         }
         party.setCurNumberOfParty(restNumber);
     }
+    public void minusPartyNumber(PartyInfo party){
+        int restNumber = party.getCurNumberOfParty() - 1;
+//        if(restNumber < party.getMaxNumberOfParty()){
+//            party.setPartyStatus(PartyStatus.OPEN);
+//        }
+        if (restNumber <= 0 ) {
+            throw new ApiException(ApiStatus.MINUS_MEMBER_ERROR);
+        }
+        party.setCurNumberOfParty(restNumber);
 
+    }
 
     @Override
     @Transactional

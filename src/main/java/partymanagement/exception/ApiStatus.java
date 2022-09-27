@@ -18,7 +18,8 @@ public enum ApiStatus {
     CANNOT_REMOVE_PARTYINFO(HttpStatus.ACCEPTED, -806, "해당 파티가 삭제 불가합니다."),
     REMOVED_PARTYINFO(HttpStatus.ACCEPTED, -807, "해당 파티가 삭제되었습니다."),
     CANNOT_FOUND_CARPOOLER(HttpStatus.INTERNAL_SERVER_ERROR, -810, "카풀러를 찾을 수 없습니다."),
-    EXCEED_MAX_NUMBER(HttpStatus.INTERNAL_SERVER_ERROR, -810, "파티에 인원이 초과하였습니다.")
+    EXCEED_MAX_NUMBER(HttpStatus.INTERNAL_SERVER_ERROR, -810, "파티에 인원이 초과하였습니다."),
+    MINUS_MEMBER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, -810, "파티 인원 취소 중 문제가 발생하였습니다."),
     ;
 
     private final HttpStatus httpStatus;
